@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>GD</title>
+
+    <script src="gd/math/MathUtils.js"></script>
+    <script src="gd/math/Point2.js"></script>
+    <script src="gd/math/Ray.js"></script>
+    <script src="gd/math/Segment.js"></script>
+
+    <script src="gd/utils/Node.js"></script>
+    <script src="gd/utils/DoublyList.js"></script>
+    <script src="gd/utils/Collection.js"></script>
+
+    <script src="gd/core/Geometry.js"></script>
+    <script src="gd/core/Mesh.js"></script>
+    <script src="gd/core/Scene.js"></script>
+    <script src="gd/core/RectGeometry.js"></script>
+    <script src="gd/core/CircleGeometry.js"></script>
+    <script src="gd/core/Material.js"></script>
+    <script src="gd/core/ColorMaterial.js"></script>
+    <script src="gd/core/GradientMaterial.js"></script>
+    <script src="gd/core/Renderer.js"></script>
+    <script src="gd/core/Camera.js"></script>
+    <script src="gd/core/Color.js"></script>
+</head>
+<body>
+<canvas id="canvas" width="900" height="600"></canvas>
+<script>
+    window.onload = function() {
+        var canvas = document.getElementById("canvas");
+        var renderer = new GD.Renderer(canvas);
+        var camera = new GD.Camera();
+        var scene = new GD.Scene();
+        camera.moveTo(new GD.Point2(0, 0));
+
+        var rectCount = 10;
+        var circleCount = 15;
+
+        createRects(scene, rectCount);
+        createCircles(scene, circleCount);
+
+        var circleGeometry = new GD.CircleGeometry(new GD.Point2(0, 0), 50, 360);
+        var vertexes = circleGeometry.getVertexes().getList();
+        var vertex = vertexes.getHead();
+
+        animate();
+
+        function animate() {
+            renderer.render(scene, camera);
+            camera.moveTo(vertex.getData());
+
+            if (vertex.getNext()) {
+                vertex = vertex.getNext();
+            } else {
+                vertex = vertexes.getHead();
+            }
+
+            requestAnimationFrame(animate);
+        }
+    };
+
+    function createRects(scene, count) {
+        for (var i = 0; i < count; i++) {
+            scene.add(createRandomRect());
+        }
+    }
+
+    function createCircles(scene, count) {
+        for (var i = 0; i < count; i++) {
+            scene.add(createRandomCircle());
+        }
+    }
+
+    function createRandomCircle() {
+        var circleGeometry = new GD.CircleGeometry(getRandomPoint(), getRandomInt(10, 50), getRandomInt(5, 50));
+        var circleMaterial = new GD.ColorMaterial(getRandomColor());
+
+        return new GD.Mesh(circleGeometry, circleMaterial);
+    }
+
+    function createRandomRect() {
+        var rectGeometry = new GD.RectGeometry(getRandomPoint(), getRandomInt(10, 50), getRandomInt(10, 50));
+        var rectMaterial = new GD.ColorMaterial(getRandomColor());
+
+        return new GD.Mesh(rectGeometry, rectMaterial);
+    }
+
+    function getRandomPoint() {
+        return new GD.Point2(getRandomInt(-450, 450), getRandomInt(-300, 300))
+    }
+
+    function getRandomColor() {
+        return new GD.Color(getRandomInt(100, 255), getRandomInt(110, 255), getRandomInt(110, 255));
+    }
+
+    function getRandomInt(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+</script>
+</body>
+</html>
