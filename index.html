@@ -41,15 +41,21 @@
         createRects(scene, rectCount);
         createCircles(scene, circleCount);
 
-        var circleGeometry = new GD.CircleGeometry(new GD.Point2(0, 0), getRandomInt(10, 100), getRandomInt(10, 360));
+        var circleGeometry = new GD.CircleGeometry(new GD.Point2(0, 0), getRandomInt(5, 10), getRandomInt(300, 360));
         var vertexes = circleGeometry.getVertexes().getList();
         var vertex = vertexes.getHead();
 
         animate();
 
+        var rotation = 1;
+
         function animate() {
+
             renderer.render(scene, camera);
             camera.moveTo(vertex.getData());
+            scene.getMeshes().each(function (mesh) {
+                mesh.getGeometry().rotate(1);
+            });
 
             if (vertex.getNext()) {
                 vertex = vertex.getNext();
