@@ -38,10 +38,6 @@ namespace GD {
             }.bind(this));
         }
 
-        private distance(point1: Point2, point2: Point2): number {
-            return Math.sqrt(Math.pow((point2.getX() - point1.getX()), 2) + Math.pow(point2.getY() - point1.getY(), 2));
-        }
-
         public getPosition(): Point2 {
             return this.position;
         }
