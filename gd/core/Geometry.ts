@@ -23,6 +23,25 @@ namespace GD {
             this.position = position;
         }
 
+        public rotate(deg: number) {
+            this.vertexes.each(function (vertex: Point2) {
+                let zeroX = vertex.getX() - this.position.getX();
+                let zeroY = vertex.getY() - this.position.getY();
+
+                let rad = MathUtils.degToRad(deg);
+
+                let newX = zeroX * Math.cos(rad) - zeroY * Math.sin(rad);
+                let newY = zeroX * Math.sin(rad) + zeroY * Math.cos(rad);
+
+                vertex.setX(newX + this.position.getX());
+                vertex.setY(newY + this.position.getY());
+            }.bind(this));
+        }
+
+        private distance(point1: Point2, point2: Point2): number {
+            return Math.sqrt(Math.pow((point2.getX() - point1.getX()), 2) + Math.pow(point2.getY() - point1.getY(), 2));
+        }
+
         public getPosition(): Point2 {
             return this.position;
         }
@@ -48,26 +67,27 @@ namespace GD {
             return (intersects & 1) !== 0;
         }
 
-        public isSegmentsCross(ray: Ray, segment: Segment): Object|boolean {
+        public isSegmentsCross(ray: Ray, segment: Segment): Point2|boolean {
             let d = (segment.getSecondPoint().getY() - segment.getFirstPoint().getY())
                 * (ray.getPointOnRay().getX() - ray.getPoint().getX())
                 - (segment.getSecondPoint().getX() - segment.getFirstPoint().getX())
                 * (ray.getPointOnRay().getY() - ray.getPoint().getY());
 
             if (d != 0) {
-                var u0 = this.halfplane(ray.getPoint(), segment.getFirstPoint(), segment.getSecondPoint()) / d;
-                var u1 = this.halfplane(ray.getPointOnRay(), ray.getPoint(), segment.getFirstPoint()) / d;
+                var u0 = this.halfPlane(ray.getPoint(), segment.getFirstPoint(), segment.getSecondPoint()) / d;
+                var u1 = this.halfPlane(ray.getPointOnRay(), ray.getPoint(), segment.getFirstPoint()) / d;
                 if (u0 >= 0 && (u1 * u1 <= u1)) {
-                    return {
-                        x : ray.getPoint().getX() + u0 * (ray.getPointOnRay().getX() - ray.getPoint().getX()),
-                        y : ray.getPoint().getY() + u0 * (ray.getPointOnRay().getY() - ray.getPoint().getY())
-                    }
+                    return new Point2(
+                        ray.getPoint().getX() + u0 * (ray.getPointOnRay().getX() - ray.getPoint().getX()),
+                        ray.getPoint().getY() + u0 * (ray.getPointOnRay().getY() - ray.getPoint().getY())
+                    );
                 }
             }
+
             return false;
         }
 
-        private halfplane(p, a1, a2): number {
+        private halfPlane(p, a1, a2): number {
             return (p.getX() - a1.getX()) * (p.getY() - a2.getY()) - (p.getY() - a1.getY()) * (p.getX() - a2.getX());
         }
 
