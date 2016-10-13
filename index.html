@@ -16,7 +16,7 @@
     <script src="gd/core/Geometry.js"></script>
     <script src="gd/core/Mesh.js"></script>
     <script src="gd/core/Scene.js"></script>
-    <script src="gd/core/RectGeometry.js"></script>
+    <script src="gd/core/RectangleGeometry.js"></script>
     <script src="gd/core/CircleGeometry.js"></script>
     <script src="gd/core/Material.js"></script>
     <script src="gd/core/ColorMaterial.js"></script>
@@ -42,7 +42,7 @@
         createCircles(scene, circleCount);
 
         var circleGeometry = new GD.CircleGeometry(new GD.Point2(0, 0), getRandomInt(5, 10), getRandomInt(300, 360));
-        var vertexes = circleGeometry.getVertexes().getList();
+        var vertexes = circleGeometry.getVertexes().toList();
         var vertex = vertexes.getHead();
 
         animate();
@@ -87,7 +87,7 @@
     }
 
     function createRandomRect() {
-        var rectGeometry = new GD.RectGeometry(getRandomPoint(), getRandomInt(10, 50), getRandomInt(10, 50));
+        var rectGeometry = new GD.RectangleGeometry(getRandomPoint(), getRandomInt(10, 50), getRandomInt(10, 50));
         var rectMaterial = new GD.ColorMaterial(getRandomColor());
 
         return new GD.Mesh(rectGeometry, rectMaterial);

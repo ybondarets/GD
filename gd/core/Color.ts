@@ -6,17 +6,10 @@ namespace GD {
         private g: number;
         private b: number;
 
-        public rDirection;
-        public gDirection;
-        public bDirection;
-
         public constructor(r: number, g: number, b: number) {
             this.r = r;
             this.g = g;
             this.b = b;
-            this.rDirection = Math.random() > 0.5 ? 1 : -1;
-            this.gDirection = Math.random() > 0.5 ? 1 : -1;
-            this.bDirection = Math.random() > 0.5 ? 1 : -1;
         }
 
         public getR(): number {
@@ -47,7 +40,7 @@ namespace GD {
             return "#" + this.intToHex(this.r) + this.intToHex(this.g) + this.intToHex(this.b);
         }
 
-        public intToHex(num: number) {
+        private intToHex(num: number) {
             return num.toString(16);
         }
 

@@ -9,9 +9,10 @@ namespace GD {
         last(): any;
         each(callback: (data: any) => any);
         filter(callback: (data: any) => boolean): Collection<any>;
-        getByPosition(position: number): any;
-        hasAtPosition(position: number): boolean;
-        remove(position: number);
+        offsetGet(position: number): any;
+        offsetExists(position: number): boolean;
+        offsetUnset(position: number);
         toArray(): Array<any>
+        toList(): DoublyList
     }
 }

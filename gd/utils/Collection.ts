@@ -18,7 +18,7 @@ namespace GD {
 
         public reset(data: Array<ItemType>) {
             for (let i = 0; i < data.length; i++) {
-                if (data.hasOwnProperty(i)) {
+                if (data.indexOf(data[i]) !== -1) {
                     this.add(data[i]);
                 }
             }
@@ -62,16 +62,16 @@ namespace GD {
             return new Collection<ItemType>();
         }
 
-        public getByPosition(position: number): ItemType {
-            return this.values.getByPosition(position).getData();
+        public offsetGet(position: number): ItemType {
+            return this.values.offsetGet(position).getData();
         }
 
-        public hasAtPosition(position: number): boolean {
-            return this.values.hasPosition(position);
+        public offsetExists(position: number): boolean {
+            return this.values.offsetExists(position);
         }
 
-        public remove(position: number) {
-            this.values.remove(position);
+        public offsetUnset(position: number) {
+            this.values.offsetUnset(position);
         }
 
         public toArray(): Array<ItemType> {
@@ -84,7 +84,7 @@ namespace GD {
             return result;
         }
 
-        public getList(): DoublyList {
+        public toList(): DoublyList {
             return this.values;
         }
     }

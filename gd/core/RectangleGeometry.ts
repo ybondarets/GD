@@ -1,7 +1,7 @@
 ///<reference path="../typing.d.ts"/>
 
 namespace GD {
-    export class RectGeometry extends Geometry {
+    export class RectangleGeometry extends Geometry {
         private width: number;
         private height: number;
 

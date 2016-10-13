@@ -38,8 +38,8 @@ namespace GD {
             this.length++;
         }
 
-        public remove(position: number) {
-            if (!this.hasPosition(position)) {
+        public offsetUnset(position: number) {
+            if (!this.offsetExists(position)) {
                 throw new Error("Node at position[" + position + "] is not exist.");
             }
 
@@ -50,7 +50,7 @@ namespace GD {
                 this.tail = this.tail.getPrev();
                 this.tail.setNext(null);
             } else {
-                let node = this.getByPosition(position);
+                let node = this.offsetGet(position);
                 let next = node.getNext();
                 let prev = node.getPrev();
 
@@ -61,8 +61,8 @@ namespace GD {
             this.length--;
         }
 
-        public getByPosition(position: number): Node {
-            if (!this.hasPosition(position)) {
+        public offsetGet(position: number): Node {
+            if (!this.offsetExists(position)) {
                 throw new Error("Node at position[" + position + "] is not exist.");
             }
 
@@ -77,7 +77,7 @@ namespace GD {
             return currentNode;
         }
 
-        public hasPosition(position: number): boolean {
+        public offsetExists(position: number): boolean {
             return !(this.length === 0 || position < 0 || position >= this.length)
         }
     }
