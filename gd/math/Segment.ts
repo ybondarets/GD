@@ -3,22 +3,20 @@
 namespace GD {
 
     export class Segment {
+        private firstPoint: Point2;
+        private secondPoint: Point2;
 
-        private point1: Point2;
-        private point2: Point2;
-
-        public constructor(point1: Point2, point2: Point2) {
-            this.point1 = point1;
-            this.point2 = point2;
+        public constructor(firstPoint: Point2, secondPoint: Point2) {
+            this.firstPoint = firstPoint;
+            this.secondPoint = secondPoint;
         }
 
         public getFirstPoint(): Point2 {
-            return this.point1;
+            return this.firstPoint;
         }
 
         public getSecondPoint(): Point2 {
-            return this.point2;
+            return this.secondPoint;
         }
     }
-
 }
