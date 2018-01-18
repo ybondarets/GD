@@ -5,11 +5,28 @@ namespace GD {
         private canvas: HTMLCanvasElement;
         private context: CanvasRenderingContext2D;
         private clearColor: string;
+        private rendererCollection: GD.Collection;
 
         public constructor(canvas: HTMLCanvasElement) {
             this.canvas = canvas;
             this.context = canvas.getContext("2d");
             this.clearColor = "black";
+            this.rendererCollection = new GD.Collection();
+            this.createBaseRenderer();
+        }
+
+        public getCanvas(): HTMLCanvasElement {
+            return this.canvas;
+        }
+
+        private createBaseRenderer() {
+            let renderer = new GD.BaseRenderer();
+            renderer.setCanvas(this.canvas);
+            this.addRenderer(renderer);
+        }
+
+        public addRenderer(renderer: MeshRendererInterface) {
+            this.rendererCollection.add(renderer);
         }
 
         public setClearColor(color: string) {
@@ -21,37 +38,13 @@ namespace GD {
             scene.getMeshes().each(this.renderMesh.bind(this, camera));
         }
 
-        private renderMesh(camera: Camera, mesh: Mesh) {
-            let material = mesh.getMaterial();
-            let geometry = mesh.getGeometry();
-            let context = this.context;
-
-            context.fillStyle = material.getStyle();
-            context.beginPath();
-            geometry.getVertexes().each(function(point: Point2, index: number) {
-                let realPoint = this.applyCameraPosition(point, camera);
-                if (index === 0) {
-                    context.moveTo(realPoint.getX(), realPoint.getY());
-                } else {
-                    context.lineTo(realPoint.getX(), realPoint.getY());
+        public renderMesh(camera: Camera, mesh: Mesh) {
+            this.rendererCollection.each((renderer: MeshRendererInterface) => {
+                if (renderer.support(mesh)) {
+                    renderer.renderMesh(camera, mesh, this.context);
                 }
-            }.bind(this));
-            context.closePath();
-            context.fill();
+            });
         }
-
-        private applyCameraPosition(point: Point2, camera: Camera): Point2 {
-            return new Point2(this.applyCameraX(point, camera), this.applyCameraY(point, camera));
-        }
-
-        private applyCameraX(point: Point2, camera: Camera): number {
-            return (point.getX() + camera.getPosition().getX()) + this.canvas.width / 2;
-        }
-
-        private applyCameraY(point: Point2, camera: Camera) {
-            return -(point.getY() + camera.getPosition().getY()) + this.canvas.height / 2;
-        }
-
 
         private clear() {
             this.context.fillStyle = this.clearColor;

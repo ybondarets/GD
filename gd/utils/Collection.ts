@@ -39,6 +39,7 @@ namespace GD {
 
         public each(callback: (data: ItemType, position?: number) => any) {
             let node = this.values.getHead();
+            if (!node) return;
             let position = 0;
             do {
                 callback(node.getData(), position);

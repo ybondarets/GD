@@ -41,7 +41,9 @@ namespace GD {
         }
 
         private intToHex(num: number) {
-            return num.toString(16);
+            let result = num.toString(16);
+
+            return result.length == 1 ? result + result : result;
         }
 
         public getRgb(): string {

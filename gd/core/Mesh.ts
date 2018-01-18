@@ -14,8 +14,16 @@ namespace GD {
             return this.geometry;
         }
 
-        public getMaterial(): Material {
+        public getMaterial(): GD.Material {
             return this.material;
+        }
+
+        public moveTo(point: Point2) {
+            this.getGeometry().setPosition(point);
+        }
+
+        public isBase(): boolean {
+            return true;
         }
     }
 }
