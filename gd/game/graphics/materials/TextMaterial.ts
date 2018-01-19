@@ -6,7 +6,7 @@ namespace Game {
         public constructor(color: GD.Color, text = "") {
             super(color);
             this.text = text;
-            this.style = new TextStyle();
+            this.style = new Game.TextStyle();
             this.style.color = color;
         }
 

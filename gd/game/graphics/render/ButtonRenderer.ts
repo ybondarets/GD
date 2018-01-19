@@ -14,7 +14,7 @@ namespace Game {
             context.textAlign = style.align;
             context.textBaseline = style.baseLine;
             let position = this.applyCameraPosition(geometry.getPosition(), camera);
-            if (style.renderMode == RenderMode.FILL) {
+            if (style.renderMode == Game.RenderMode.FILL) {
                 context.fillStyle = style.color.getHex();
                 context.fillText(material.getText(), position.getX(), position.getY());
             } else {

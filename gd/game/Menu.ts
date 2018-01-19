@@ -1,6 +1,6 @@
 namespace Game {
     const WIDTH = 900;
-    const HEIGHT = 600;
+    const HEIGHT = 900;
     const MENU_WIDTH = 300;
     const MENU_HEIGHT = 400;
 
@@ -12,6 +12,7 @@ namespace Game {
         private buttonMargin: number;
         private border: number;
         private listener: Game.ClickListener;
+        private _onPlay: Function;
 
         public constructor(listener: Game.ClickListener) {
             super();
@@ -22,33 +23,21 @@ namespace Game {
             this.buttonMargin = 20;
             this.border = 5;
             this.listener = listener;
+            this._onPlay = () => {};
             this.build();
+        }
+
+        public onPlay(callback) {
+            this._onPlay = callback;
         }
 
         private build() {
             this.createBackGround();
             this.createMenuBackGround();
             let playButton = this.addButton("Play");
-            let alertButton = this.addButton("Alert");
-            let hideButton = this.addButton("Hide");
-            let helloButton = this.addButton("Hello");
-            // this.createCircle();
 
             this.listener.onClick(playButton, () => {
-                console.log("PlayButton");
-            });
-
-            this.listener.onClick(alertButton, () => {
-                console.log("alertButton");
-                alert("Alert button.");
-            });
-
-            this.listener.onClick(hideButton, () => {
-                console.log("hideButton");
-            });
-
-            this.listener.onClick(helloButton, () => {
-                console.log("helloButton");
+                this._onPlay();
             });
         }
 
