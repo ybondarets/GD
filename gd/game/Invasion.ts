@@ -21,6 +21,28 @@ namespace Game {
             this.createMenu();
             this.hideLoader();
             this.showMenu();
+            this.addListeners();
+        }
+
+        private addListeners() {
+            document.addEventListener('keydown', (e: KeyboardEvent) => {
+                if (this.active !== this.menu) {
+                    switch(e.keyCode) {
+                        case 40:
+                            //down
+                            break;
+                        case 38:
+                            //up
+                            break;
+                        case 39:
+                            //right
+                            break;
+                        case 37:
+                            //left
+                            break;
+                    }
+                }
+            });
         }
 
         public setClickListener(listener: Game.ClickListener) {
@@ -30,6 +52,8 @@ namespace Game {
         private startGame() {
             console.log("Start game");
             let level = this.getLevel();
+            level.shuffle();
+            level.update();
             this.setActive(level);
         }
 
@@ -52,7 +76,7 @@ namespace Game {
             let meshData = data["meshes"];
 
             for (let index in meshData) {
-                (this.generateMesh(result, meshData[index]));
+                result.data.push(this.generateMesh(result, meshData[index]));
             }
 
             return result;
@@ -60,12 +84,11 @@ namespace Game {
 
         private generateMesh(level: Game.GameLevel, data: Object) {
             let geometry = new GD.RectangleGeometry(new GD.Point2(data.x, data.y), data.width, data.height);
-            let material = new GD.ColorMaterial(new GD.Color(data.r, data.g, data.b));
-            level.getScene().add(new GD.Mesh(geometry, material));
-
-            let geometry = new GD.RectangleGeometry(new GD.Point2(data.x, data.y), data.width, data.height);
             let material = new Game.TextMaterial(new GD.Color(255, 255, 255), data.text);
-            level.getScene().add(new Game.ButtonMesh(geometry, material));
+            let mesh = new Game.ButtonMesh(geometry, material);
+            level.getScene().add(mesh);
+
+            return mesh;
         }
 
 
@@ -156,6 +179,16 @@ namespace Game {
                         "g": 0,
                         "b": 0,
                         "text": 8
+                    },
+                    {
+                        "x": 300,
+                        "y": -300,
+                        "width": 300,
+                        "height": 300,
+                        "r": 100,
+                        "g": 0,
+                        "b": 0,
+                        "text": "empty"
                     }
                 ]
             }];

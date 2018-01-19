@@ -20,7 +20,7 @@ namespace Game {
             return this.scene;
         }
 
-        getCamera(): GD.Camera {
+        public getCamera(): GD.Camera {
             return this.camera;
         }
     }
