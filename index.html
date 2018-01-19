@@ -32,90 +32,22 @@
     <script src="gd/game/graphics/render/ButtonRenderer.js"></script>
     <script src="gd/game/graphics/materials/TextMaterial.js"></script>
     <script src="gd/game/graphics/materials/TextStyle.js"></script>
+    <script src="gd/game/ClickListener.js"></script>
 </head>
 <body>
 <canvas id="canvas" width="900" height="600"></canvas>
 <script>
     window.onload = function() {
-        // var canvas = document.getElementById("canvas");
-        // var renderer = new GD.Renderer(canvas);
-        // var camera = new GD.Camera();
-        // var scene = new GD.Scene();
-        // camera.moveTo(new GD.Point2(0, 0));
-        //
-        // var rectCount = 10;
-        // var circleCount = 15;
-        //
-        // createRects(scene, rectCount);
-        // createCircles(scene, circleCount);
-        //
-        // var circleGeometry = new GD.CircleGeometry(new GD.Point2(0, 0), getRandomInt(150, 170), getRandomInt(3000, 3600));
-        // var vertexes = circleGeometry.getVertexes().toList();
-        // var vertex = vertexes.getHead();
-        //
-        // animate();
-        //
-        // function animate() {
-        //
-        //     renderer.render(scene, camera);
-        //     camera.moveTo(vertex.getData());
-        //     scene.getMeshes().each(function (mesh) {
-        //         mesh.getGeometry().rotate(1);
-        //     });
-        //
-        //     if (vertex.getNext()) {
-        //         vertex = vertex.getNext();
-        //     } else {
-        //         vertex = vertexes.getHead();
-        //     }
-        //
-        //     requestAnimationFrame(animate);
-        // }
-
         var canvas = document.getElementById("canvas");
         var renderer = new GD.Renderer(canvas);
+
+        var clickListener = new Game.ClickListener(canvas);
+
         var game = new Game.Invasion(renderer);
+        game.setClickListener(clickListener);
         game.showLoader();
         game.init();
     };
-
-    function createRects(scene, count) {
-        for (var i = 0; i < count; i++) {
-            scene.add(createRandomRect());
-        }
-    }
-
-    function createCircles(scene, count) {
-        for (var i = 0; i < count; i++) {
-            scene.add(createRandomCircle());
-        }
-    }
-
-    function createRandomCircle() {
-        var circleGeometry = new GD.CircleGeometry(getRandomPoint(), getRandomInt(10, 50), getRandomInt(5, 50));
-        var circleMaterial = new GD.ColorMaterial(getRandomColor());
-
-        return new GD.Mesh(circleGeometry, circleMaterial);
-    }
-
-    function createRandomRect() {
-        var rectGeometry = new GD.RectangleGeometry(getRandomPoint(), getRandomInt(10, 50), getRandomInt(10, 50));
-        var rectMaterial = new GD.ColorMaterial(getRandomColor());
-
-        return new GD.Mesh(rectGeometry, rectMaterial);
-    }
-
-    function getRandomPoint() {
-        return new GD.Point2(getRandomInt(-450, 450), getRandomInt(-300, 300))
-    }
-
-    function getRandomColor() {
-        return new GD.Color(getRandomInt(100, 255), getRandomInt(110, 255), getRandomInt(110, 255));
-    }
-
-    function getRandomInt(min, max) {
-        return Math.floor(Math.random() * (max - min + 1)) + min;
-    }
 </script>
 </body>
 </html>

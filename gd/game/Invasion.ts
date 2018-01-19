@@ -3,6 +3,7 @@ namespace Game {
         private renderer: GD.Renderer;
         private active: Game.AbstractRenderable;
         private menu: Game.AbstractRenderable;
+        private listener: Game.ClickListener;
 
         public constructor(renderer: GD.Renderer) {
             this.renderer = renderer;
@@ -15,6 +16,10 @@ namespace Game {
             this.createMenu();
             this.hideLoader();
             this.showMenu();
+        }
+
+        public setClickListener(listener: Game.ClickListener) {
+            this.listener = listener;
         }
 
         private createRenderers() {
@@ -38,16 +43,16 @@ namespace Game {
         }
 
         private createMenu() {
-            this.menu = new Game.Menu();
+            this.menu = new Game.Menu(this.listener);
         }
 
         public showMenu() {
-            this.active = this.menu;
+            this.setActive(this.menu);
             console.log('Show menu');
         }
 
         public hideMenu() {
-            this.active = null;
+            this.setActive(null);
             console.log('Hide menu');
         }
 
@@ -57,6 +62,17 @@ namespace Game {
 
         public hideLoader() {
             console.log('Hide loader')
+        }
+
+        private setActive(view: Game.AbstractRenderable) {
+            this.active = view;
+            if (view) {
+                this.listener.setCamera(view.getCamera());
+                this.listener.setScene(view.getScene());
+            } else {
+                this.listener.setCamera(null);
+                this.listener.setScene(null);
+            }
         }
     }
 }

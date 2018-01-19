@@ -43,5 +43,50 @@ namespace GD {
         public getPosition(): Point2 {
             return this.position;
         }
+
+        public hasPoint(point: Point2): boolean {
+            let intersects = 0;
+
+            let ray = new Ray(point, 0);
+
+            this.vertexes.each((point: Point2, position) => {
+                let next = this.vertexes.first();
+                if (this.vertexes.offsetExists(position + 1)) {
+                    next = this.vertexes.offsetGet(position + 1);
+                }
+
+                let segment = new Segment(point, next);
+
+                if (this.isSegmentsCross(ray, segment)) {
+                    intersects++;
+                }
+            });
+
+            return (intersects & 1) !== 0;
+        }
+
+        public isSegmentsCross(ray: Ray, segment: Segment): Point2|boolean {
+            let d = (segment.getSecondPoint().getY() - segment.getFirstPoint().getY())
+                * (ray.getPointOnRay().getX() - ray.getPoint().getX())
+                - (segment.getSecondPoint().getX() - segment.getFirstPoint().getX())
+                * (ray.getPointOnRay().getY() - ray.getPoint().getY());
+
+            if (d != 0) {
+                let u0 = this.halfPlane(ray.getPoint(), segment.getFirstPoint(), segment.getSecondPoint()) / d;
+                let u1 = this.halfPlane(ray.getPointOnRay(), ray.getPoint(), segment.getFirstPoint()) / d;
+                if (u0 >= 0 && (u1 * u1 <= u1)) {
+                    return new Point2(
+                        ray.getPoint().getX() + u0 * (ray.getPointOnRay().getX() - ray.getPoint().getX()),
+                        ray.getPoint().getY() + u0 * (ray.getPointOnRay().getY() - ray.getPoint().getY())
+                    );
+                }
+            }
+
+            return false;
+        }
+
+        private halfPlane(p, a1, a2): number {
+            return (p.getX() - a1.getX()) * (p.getY() - a2.getY()) - (p.getY() - a1.getY()) * (p.getX() - a2.getX());
+        }
     }
 }
